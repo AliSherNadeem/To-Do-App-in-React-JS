@@ -3,10 +3,14 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { FaRegEdit } from "react-icons/fa";
+import { MdEditDocument } from "react-icons/md";
+import { MdDeleteOutline } from "react-icons/md";
 
 function App() {
   const [todo, settodo] = useState("");
   const [todos, settodos] = useState([]);
+  const [showFinished, setshowFinished] = useState();
 
   useEffect(() => {
     let todoString = localStorage.getItem("todos");
@@ -18,6 +22,10 @@ function App() {
 
   const saveToLS = (params) => {
     localStorage.setItem("todos", JSON.stringify(todos));
+  };
+
+  const toggleFinished = (e) => {
+    setshowFinished(!showFinished);
   };
 
   const handleEdit = (e, id) => {
@@ -63,64 +71,74 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto my-5 rounded-lg p-5 bg-indigo-300 text-white min-h-[70vh]">
-        <div className="addTodo">
+      <div className="container mx-auto my-5 rounded-lg p-5 bg-indigo-300 text-white min-h-[80vh] w-1/2">
+        <h1 className="font-bold text-center text-xl">
+          TaskEase - Navigate Your Tasks with Ease
+        </h1>
+        <div className="addTodo flex flex-col gap-4">
           <h2 className="text-lg font-bold my-4">Add a Task</h2>
           <input
             onChange={handleChange}
             value={todo}
             type="text"
-            className="w-1/2 text-indigo-800 p-0.5 rounded-md"
+            className="w-full text-indigo-800 px-3 py-1 rounded-md"
           />
           <button
             onClick={handleAdd}
             disabled={todo.length < 3}
-            className="bg-green-400 hover:bg-green-600  disabled:bg-red-500 p-2 py-1 text-sm font-bold rounded-md mx-6"
+            className="bg-indigo-500 hover:bg-indigo-600  disabled:bg-indigo-400 p-2 py-1 text-sm font-bold rounded-md mb-2"
           >
             Add
           </button>
         </div>
+        <input
+          onChange={toggleFinished}
+          type="checkbox"
+          checked={showFinished}
+        />{" "}
+        Show Finished
         <h2 className="text-lg font-bold mt-4">Your Tasks</h2>
-
         <div className="todos">
           {todos.length === 0 && <div className="m-3">No Task to Display</div>}
           {todos.map((items) => {
             return (
-              <div
-                key={items.id}
-                className="todo flex justify-between w-1/4 my-4"
-              >
-                <div className="flex gap-4">
-                  <input
-                    name={items.id}
-                    onChange={handleCheckbox}
-                    type="checkbox"
-                    checked={items.isCompleted}
-                  />
-                  <div className={items.isCompleted ? "line-through" : ""}>
-                    {items.todo}
+              (showFinished || items.isCompleted) && (
+                <div
+                  key={items.id}
+                  className="todo flex justify-between w-1/2 my-4"
+                >
+                  <div className="flex gap-4">
+                    <input
+                      name={items.id}
+                      onChange={handleCheckbox}
+                      type="checkbox"
+                      checked={items.isCompleted}
+                    />
+                    <div className={items.isCompleted ? "line-through" : ""}>
+                      {items.todo}
+                    </div>
+                  </div>
+                  <div className="buttons flex h-full">
+                    <button
+                      onClick={(e) => {
+                        handleEdit(e, items.id);
+                      }}
+                      className="bg-indigo-500 hover:bg-indigo-800 p-2 py-1 text-sm font-bold rounded-md mx-1"
+                    >
+                      <MdEditDocument />
+                    </button>
+
+                    <button
+                      onClick={(e) => {
+                        handleDelete(e, items.id);
+                      }}
+                      className="bg-indigo-500 hover:bg-indigo-800 p-2 py-1 text-sm font-bold rounded-md mx-1"
+                    >
+                      <MdDeleteOutline />
+                    </button>
                   </div>
                 </div>
-                <div className="buttons flex h-full">
-                  <button
-                    onClick={(e) => {
-                      handleEdit(e, items.id);
-                    }}
-                    className="bg-indigo-500 hover:bg-indigo-800 p-2 py-1 text-sm font-bold rounded-md mx-1"
-                  >
-                    Edit
-                  </button>
-
-                  <button
-                    onClick={(e) => {
-                      handleDelete(e, items.id);
-                    }}
-                    className="bg-indigo-500 hover:bg-indigo-800 p-2 py-1 text-sm font-bold rounded-md mx-1"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+              )
             );
           })}
         </div>
