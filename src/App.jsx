@@ -79,7 +79,7 @@ function App() {
           <button
             onClick={handleAdd}
             disabled={todo.length < 3}
-            className="bg-indigo-500 text-white hover:bg-indigo-600 disabled:bg-white disabled:text-indigo-600 p-2 py-1 text-sm font-bold rounded-md mb-2"
+            className="bg-indigo-500 text-white hover:bg-indigo-600 disabled:bg-white disabled:text-indigo-600 p-2 py-1 text-sm font-bold rounded-md mb-2 w-1/2 m-auto"
           >
             Add
           </button>
