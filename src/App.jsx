@@ -64,7 +64,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div className="container mx-auto my-5 rounded-lg p-5 bg-indigo-400 text-white min-h-[80vh] w-1/2">
+      <div className="container mx-auto lg:my-5 rounded-lg p-5 bg-indigo-400 text-white min-h-[80vh] w-full lg:w-1/2 m-4 lg:m-auto">
         <h1 className="font-bold text-center text-xl">
           TaskEase - Navigate Your Tasks with Ease
         </h1>
@@ -79,7 +79,7 @@ function App() {
           <button
             onClick={handleAdd}
             disabled={todo.length < 3}
-            className="bg-indigo-500 text-white hover:bg-indigo-600 disabled:bg-white disabled:text-indigo-600 p-2 py-1 text-sm font-bold rounded-md mb-2 w-1/2 m-auto"
+            className="bg-indigo-500 text-white hover:bg-indigo-600 disabled:bg-white disabled:text-indigo-600 p-2 py-1 text-sm font-bold rounded-md mb-2 w-full lg:w-1/2 m-auto"
           >
             Add
           </button>
@@ -88,9 +88,10 @@ function App() {
           onChange={toggleFinished}
           type="checkbox"
           checked={showFinished}
+          className="mr-2"
         />{" "}
-        Show Finished
-        <h2 className="text-lg font-bold mt-4 text-center ">Your Tasks</h2>
+        <label>Show Finished</label>
+        <h2 className="text-lg font-bold mt-4 text-center">Your Tasks</h2>
         <div className="todos flex flex-col items-center">
           {todos.length === 0 && <div className="m-3">No Task to Display</div>}
           {todos
@@ -98,9 +99,9 @@ function App() {
             .map((items) => (
               <div
                 key={items.id}
-                className="todo flex justify-between w-1/2 my-4"
+                className="todo flex flex-col lg:flex-row justify-between w-full lg:w-1/2 my-4"
               >
-                <div className="flex gap-4">
+                <div className="flex gap-4 items-center">
                   <input
                     name={items.id}
                     onChange={() => handleCheckbox(items.id)}
@@ -111,7 +112,7 @@ function App() {
                     {items.todo}
                   </div>
                 </div>
-                <div className="buttons flex h-full ml-5">
+                <div className="buttons flex h-full mt-2 lg:mt-0 ml-0 lg:ml-5">
                   <button
                     onClick={() => handleEdit(items.id)}
                     className="bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white p-2 py-1 text-sm font-bold rounded-md mx-1"
